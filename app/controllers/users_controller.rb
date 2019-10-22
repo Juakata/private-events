@@ -6,17 +6,17 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      redirect_to user
+    @user = User.new(user_params)
+    if @user.save
+      redirect_to @user
     else
-      @user = user
       render 'new'
     end
   end
 
   def show
     @user = User.find(params[:id])
+    @events = current_user.events
   end
 
   private

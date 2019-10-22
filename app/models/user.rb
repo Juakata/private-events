@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+  has_many :events
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

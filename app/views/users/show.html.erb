@@ -1,3 +1,13 @@
 <h1> <%= @user.name %> </h1>
 
 <%= link_to "Sign Out", signout_path, method: :delete %>
+
+<%= link_to "All events", events_path %>
+<%= link_to "Create new event", new_event_path %>
+
+<ul>
+    <% @events.each do |event| %>
+      <li><%= event.date %></li>
+      <li><%= event.description %></li>
+    <% end %>
+  </ul>
