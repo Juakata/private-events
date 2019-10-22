@@ -10,6 +10,9 @@
   </head>
 
   <body>
+    <% unless current_user.nil? %>
+      <h1> <%= current_user.name %> </h1>
+    <% end %>
     <%= yield %>
   </body>
 </html>
