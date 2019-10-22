@@ -1,0 +1,14 @@
+<h1> Start your account just with a unique username </h1>
+<% if @user.errors.any? %>
+  <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_for(@user) do |f| %>
+  <%= f.text_field :name %>
+  <%= f.submit "Sign Up!" %>
+<% end %>
+
+<%= link_to "Already have an account?", signin_path %>
