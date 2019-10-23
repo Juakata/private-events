@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :logged_in, only: [:show]
+  before_action :signed_in, only: [:new, :create]
 
   def new
     @user = User.new
@@ -27,5 +28,9 @@ class UsersController < ApplicationController
 
   def logged_in
     redirect_to root_path unless log_in?
+  end
+
+  def signed_in
+    redirect_to current_user if log_in?
   end
 end
