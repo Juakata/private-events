@@ -1,11 +1,15 @@
 <h1> All events </h1>
-
-<ul>
-<% @events.each do |event| %>
-  <li><%= event.date %></li>
-  <li><%= event.description %></li>
-  <%= link_to "Show event", event_path(event.id) %>
-  <%= link_to "Join Event",  join_path, {:id_user => event.id} %>
-  <br> <br>
+<%= link_to "Profile", current_user %>
+<% if @events.any? %>
+  <ul>
+    <% @events.each do |event| %>
+      <li><%= event.date %></li>
+      <li><%= event.description %></li>
+      <%= link_to "Show event", event_path(event.id) %>
+      <%= link_to "Join event",  join_path(event.id) %>
+      <br> <br>
+    <% end %>
+  </ul>
+<% else %>
+  <%= link_to "Create new event", new_event_path %>
 <% end %>
-</ul>

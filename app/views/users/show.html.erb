@@ -2,10 +2,11 @@
 
 <%= link_to "All events", events_path %>
 <%= link_to "Create new event", new_event_path %> <br>
-<%= params[:event_id] %>
+
 <ul>
     <% @events.each do |event| %>
       <li><%= event.date %></li>
       <li><%= event.description %></li>
+      <br>
     <% end %>
   </ul>
