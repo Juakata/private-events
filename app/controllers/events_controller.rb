@@ -13,17 +13,20 @@ class EventsController < ApplicationController
   end
 
   def index
-    @events = Event.all
+    @events = Event.where("events.user_id != ? ", current_user.id).joins(:attended_events)
   end
 
   def show
-    @attendees = Attendee.joins(:attended_events)
+    @attendees = AttendedEvent.joins(:event).where("event_id == ?", params[:id])
   end
 
   def join
-    Attendee.create(user_id: current_user.id)
-    AttendedEvent.create(attendee_id: current_user.id, event_id: params[:event_id])
-    redirect_to current_user
+    @attendee = Attendee.new(user_id: current_user.id)
+    if @attendee.save
+      @attended = @attendee.attended_events.build(event_id: params[:event_id])
+      @attended.save
+      redirect_to current_user
+    end
   end
 
   private
