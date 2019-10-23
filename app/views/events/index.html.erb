@@ -4,5 +4,8 @@
 <% @events.each do |event| %>
   <li><%= event.date %></li>
   <li><%= event.description %></li>
+  <%= link_to "Show event", event_path(event.id) %>
+  <%= link_to "Join Event",  join_path, {:id_user => event.id} %>
+  <br> <br>
 <% end %>
 </ul>

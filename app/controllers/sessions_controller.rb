@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :logged_in, only: [:new, :create]
+
   def new
   end
 
@@ -16,5 +18,11 @@ class SessionsController < ApplicationController
   def destroy
     sign_out if log_in?
     redirect_to root_path
+  end
+
+  def logged_in
+    if log_in? 
+      redirect_to current_user
+    end
   end
 end
