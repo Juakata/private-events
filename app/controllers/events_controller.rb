@@ -30,7 +30,7 @@ class EventsController < ApplicationController
       @attended.save
       redirect_to current_user
     else
-      flash[:error] = "Unable to join to the event."
+      flash[:error] = 'Unable to join to the event.'
       render 'index'
     end
   end
