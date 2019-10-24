@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   def create
     @event = current_user.events.build(events_params)
     if @event.save
       redirect_to @current_user
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -13,12 +15,12 @@ class EventsController < ApplicationController
   end
 
   def index
-    @events = Event.where("user_id != ? and id NOT IN(?)",
-      current_user.id, Attendee.joins(:attended_events).all.select(:event_id).where("attendees.user_id = ?", current_user.id))
+    @events = Event.where('user_id != ? and id NOT IN(?)',
+                          current_user.id, Attendee.joins(:attended_events).all.select(:event_id).where('attendees.user_id = ?', current_user.id))
   end
 
   def show
-    @attendees = AttendedEvent.joins(:event).where("event_id == ?", params[:id])
+    @attendees = AttendedEvent.joins(:event).where('event_id == ?', params[:id])
   end
 
   def join

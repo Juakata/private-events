@@ -1,8 +1,9 @@
-class SessionsController < ApplicationController
-  before_action :logged_in, only: [:new, :create]
+# frozen_string_literal: true
 
-  def new
-  end
+class SessionsController < ApplicationController
+  before_action :logged_in, only: %i[new create]
+
+  def new; end
 
   def create
     user = User.find_by_name(params[:session][:name])
@@ -21,8 +22,6 @@ class SessionsController < ApplicationController
   end
 
   def logged_in
-    if log_in? 
-      redirect_to current_user
-    end
+    redirect_to current_user if log_in?
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :logged_in, only: [:show]
-  before_action :signed_in, only: [:new, :create]
+  before_action :signed_in, only: %i[new create]
 
   def new
     @user = User.new
@@ -19,7 +21,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @events = current_user.events
-   
   end
 
   private
