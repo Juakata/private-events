@@ -15,8 +15,8 @@ class EventsController < ApplicationController
   end
 
   def index
-    @events = Event.where('user_id != ? and id NOT IN(?)',
-                          current_user.id, Attendee.joins(:attended_events).all.select(:event_id).where('attendees.user_id = ?', current_user.id))
+    events_id = Attendee.joins(:attended_events).all.select(:event_id).where('attendees.user_id = ?', current_user.id)
+    @events = Event.where('user_id != ? and id NOT IN(?)',current_user.id, events_id)
   end
 
   def show

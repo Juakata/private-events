@@ -10,8 +10,7 @@ class User < ApplicationRecord
   scope :past, ->(id) { Event.where('id IN (?) and date < ?', User.event_ids(id), Date.today) }
 
   def self.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
