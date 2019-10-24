@@ -3,6 +3,9 @@ class User < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   has_many :events
   has_many :attendees
+  scope :event_ids, ->(id) {Attendee.joins(:attended_events).select(:event_id).where("user_id == ?",id)}
+  scope :upcoming, ->(id) {Event.where("id IN (?) and date >= ?", User.event_ids(id), Date.today)}
+  scope :past, ->(id) {Event.where("id IN (?) and date < ?", User.event_ids(id), Date.today)}
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -21,5 +24,13 @@ class User < ApplicationRecord
 
   def authenticated? token
     BCrypt::Password.new(remember_digest).is_password?(token)
+  end
+
+  def upcoming_events
+   User.upcoming(self.id)
+  end
+
+  def past_events
+    User.past(self.id)
   end
 end
