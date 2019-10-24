@@ -16,7 +16,7 @@ class EventsController < ApplicationController
 
   def index
     events_id = Attendee.joins(:attended_events).all.select(:event_id).where('attendees.user_id = ?', current_user.id)
-    @events = Event.where('user_id != ? and id NOT IN(?)',current_user.id, events_id)
+    @events = Event.where('user_id != ? and id NOT IN(?)', current_user.id, events_id)
   end
 
   def show
@@ -29,6 +29,9 @@ class EventsController < ApplicationController
       @attended = @attendee.attended_events.build(event_id: params[:event_id])
       @attended.save
       redirect_to current_user
+    else
+      flash[:error] = "Unable to join to the event."
+      render 'index'
     end
   end
 

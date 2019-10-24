@@ -24,10 +24,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_current_user
-
-  end
-
   def log_in?
     !current_user.nil?
   end
