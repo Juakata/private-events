@@ -1,12 +1,29 @@
 <%= link_to "Profile", current_user %>
 <h1> All events </h1>
-<% if @events.any? %>
-  <ul>
-    <% @events.each do |event| %>
+<% if @upcoming_events.any? || @past_events.any? %>
+  <h1>Upcoming events</h1>
+<ul>
+    <% @upcoming_events.each do |event| %>
       <li><%= event.date %></li>
       <li><%= event.description %></li>
       <%= link_to "Show event", event_path(event.id) %>
-      <%= link_to "Join event",  join_path(event.id) %>
+      <% unless @events_user.include?(event.id) || @events_joined.include?(event.id) %>
+        <%= link_to "Join event",  join_path(event.id) %>
+      <% end %>
+      <br> <br>
+    <% end %>
+  </ul>
+
+  <h1>Past events</h1>
+
+<ul>
+    <% @past_events.each do |event| %>
+      <li><%= event.date %></li>
+      <li><%= event.description %></li>
+      <%= link_to "Show event", event_path(event.id) %>
+      <% unless @events_user.include?(event.id) || @events_joined.include?(event.id) || @past_events_id.include?(event.id) %>
+        <%= link_to "Join event",  join_path(event.id) %>
+      <% end %>
       <br> <br>
     <% end %>
   </ul>

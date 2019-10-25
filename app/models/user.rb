@@ -3,11 +3,13 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
   validates :name, presence: true, uniqueness: { case_sensitive: false }
-  has_many :events
-  has_many :attendees
-  scope :event_ids, ->(id) { Attendee.joins(:attended_events).select(:event_id).where('user_id == ?', id) }
-  scope :upcoming, ->(id) { Event.where('id IN (?) and date >= ?', User.event_ids(id), Date.today) }
-  scope :past, ->(id) { Event.where('id IN (?) and date < ?', User.event_ids(id), Date.today) }
+  has_many :creator_events, foreign_key: 'creator_id', class_name: 'Event'
+
+  has_many :attendances, foreign_key: 'attendee_id'
+  has_many :attended_events, through: :attendances, class_name: 'Event'
+
+  scope :upcoming, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).upcoming }
+  scope :past, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).past }
 
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost

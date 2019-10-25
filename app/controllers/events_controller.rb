@@ -2,7 +2,7 @@
 
 class EventsController < ApplicationController
   def create
-    @event = current_user.events.build(events_params)
+    @event = current_user.creator_events.build(events_params)
     if @event.save
       redirect_to @current_user
     else
@@ -15,19 +15,20 @@ class EventsController < ApplicationController
   end
 
   def index
-    events_id = Attendee.joins(:attended_events).all.select(:event_id).where('attendees.user_id = ?', current_user.id)
-    @events = Event.where('user_id != ? and id NOT IN(?)', current_user.id, events_id)
+    @upcoming_events = Event.upcoming
+    @past_events = Event.past
+    @past_events_id = Event.past.map(&:id)
+    @events_user = Event.where('creator_id = ?', current_user.id).map(&:id)
+    @events_joined = User.upcoming(current_user.id).map(&:id)
   end
 
   def show
-    @attendees = AttendedEvent.joins(:event).where('event_id == ?', params[:id])
+    @attendees = User.joins(:attendances).where('attended_event_id == ?', params[:id])
   end
 
   def join
-    @attendee = Attendee.new(user_id: current_user.id)
-    if @attendee.save
-      @attended = @attendee.attended_events.build(event_id: params[:event_id])
-      @attended.save
+    @attendance = Attendance.new(attendee_id: current_user.id, attended_event_id: params[:event_id])
+    if @attendance.save
       redirect_to current_user
     else
       flash[:error] = 'Unable to join to the event.'
