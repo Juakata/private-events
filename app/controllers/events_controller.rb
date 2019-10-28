@@ -19,7 +19,7 @@ class EventsController < ApplicationController
     @past_events = Event.past
     @past_events_id = Event.past.map(&:id)
     @events_user = Event.where('creator_id = ?', current_user.id).map(&:id)
-    @events_joined = User.upcoming(current_user.id).map(&:id)
+    @events_joined = User.user_upcoming_events(current_user.id).map(&:id)
   end
 
   def show

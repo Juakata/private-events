@@ -8,8 +8,8 @@ class User < ApplicationRecord
   has_many :attendances, foreign_key: 'attendee_id'
   has_many :attended_events, through: :attendances, class_name: 'Event'
 
-  scope :upcoming, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).upcoming }
-  scope :past, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).past }
+  scope :user_upcoming_events, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).upcoming }
+  scope :user_past_events, ->(id) { Event.joins(:attendances).where('attendee_id == ?', id).past }
 
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
@@ -30,10 +30,10 @@ class User < ApplicationRecord
   end
 
   def upcoming_events
-    User.upcoming(id)
+    User.user_upcoming_events(id)
   end
 
   def past_events
-    User.past(id)
+    User.user_past_events(id)
   end
 end
