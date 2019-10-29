@@ -1,0 +1,8 @@
+<%= link_to "Go back", current_user %>
+<h1>Looks who's coming!</h1>
+
+<ul>
+<% @attendees.each do |attendee| %>
+  <li><%= attendee.name %></li>
+<% end %>
+</ul>

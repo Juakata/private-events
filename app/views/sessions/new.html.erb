@@ -1,0 +1,6 @@
+<h1> Sign In </h1>
+<%= form_for(:session) do |f| %>
+  <%= f.text_field :name %>
+  <%= f.submit %>
+<% end %>
+<%= link_to "Create an account", root_path  %>
